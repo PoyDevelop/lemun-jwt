@@ -14,3 +14,15 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->group(['prefix' => 'api/v1'], function ($router) {
+    // Users
+    $router->post('user/register', 'UserController@register');
+    $router->post('user/login', ['uses' => 'UserController@login']);
+});
+
+
+// require Login
+$router->group(['prefix' => 'api/v1', 'middleware' => 'jwt.auth'], function ($router) {
+    $router->get('test', 'UserController@MakeData');
+});
